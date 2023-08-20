@@ -32,7 +32,7 @@ initializeApp(firebaseConfig);
 
 const auth = getAuth();
 
-const useAuth = () => {
+export const useAuth = () => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -56,32 +56,20 @@ const useAuth = () => {
   return { user, signInWithGoogle, logOut };
 };
 
-export const useOptionalUser = () => useAuth()
-export const useLoggedUser = () => {
-  const { user, ...rest } = useAuth()
-
-  if (!user) {
-    throw new Error('User is not logged in')
-  }
-
-  return { user, ...rest }
-}
 
 export const useChat = () => {
   const firestore = getFirestore();
   const [messages, setMessages] = useState<TMessage[] | null>(null);
 
-  const messagesCollection = collection(firestore, "messages") as CollectionReference<TMessage>
-  const messagesQuery = query(messagesCollection, orderBy("createdAt", "desc"));
-
   useEffect(() => {
-    const unsubscribe = onSnapshot(messagesQuery, (doc) => {
-      const messages = doc.docs.map(doc => doc.data()).reverse()
+    const messagesCollection = collection(firestore, "messages") as CollectionReference<TMessage>
+    const messagesQuery = query(messagesCollection, orderBy("createdAt", "desc"));
 
-      setMessages(messages);
+    const unsubscribe = onSnapshot(messagesQuery, (doc) => {
+      setMessages(doc.docs.map(doc => ({ ...doc.data(), id: doc.id })).reverse());
     });
     return unsubscribe
-  }, [messagesQuery]);
+  }, [firestore]);
 
   const { user } = useAuth();
 
