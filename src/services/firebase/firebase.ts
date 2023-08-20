@@ -56,9 +56,9 @@ export const useAuth = () => {
   return { user, signInWithGoogle, logOut };
 };
 
+const firestore = getFirestore();
 
 export const useChat = () => {
-  const firestore = getFirestore();
   const [messages, setMessages] = useState<TMessage[] | null>(null);
 
   useEffect(() => {
@@ -66,10 +66,10 @@ export const useChat = () => {
     const messagesQuery = query(messagesCollection, orderBy("createdAt", "desc"));
 
     const unsubscribe = onSnapshot(messagesQuery, (doc) => {
-      setMessages(doc.docs.map(doc => ({ ...doc.data(), id: doc.id })).reverse());
+      setMessages(doc.docs.map(doc => doc.data()).reverse());
     });
     return unsubscribe
-  }, [firestore]);
+  }, []);
 
   const { user } = useAuth();
 
