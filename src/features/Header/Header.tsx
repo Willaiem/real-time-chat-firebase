@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLoggedUser } from "../../services/firebase/firebase";
+import { useAuth } from "../../services/firebase/firebase";
 
 export const Header = () => {
   return (
@@ -12,7 +12,7 @@ export const Header = () => {
 
 
 const Profile = () => {
-  const { user } = useLoggedUser();
+  const { user } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
@@ -22,15 +22,15 @@ const Profile = () => {
       onClick={toggleDropdown}
       className="flex items-center gap-4 relative cursor-pointer select-none"
     >
-      <img className="rounded-full w-12 h-12" src={user.photoURL ?? ''} alt="" />
-      <p>{user.displayName}</p>
+      <img className="rounded-full w-12 h-12" src={user?.photoURL ?? ''} alt="" />
+      <p>{user?.displayName}</p>
       {isDropdownOpen && <Dropdown />}
     </div>
   );
 };
 
 const Dropdown = () => {
-  const { logOut } = useLoggedUser();
+  const { logOut } = useAuth();
   return (
     <div className="absolute top-16 left-0  rounded-lg w-28 flex flex-col items-center">
       <button

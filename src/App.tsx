@@ -1,9 +1,9 @@
 import { SignIn } from "./pages/Auth/SignIn";
 import { Chat } from "./pages/Chat/Chat";
-import { useOptionalUser } from "./services/firebase/firebase";
+import { useAuth } from "./services/firebase/firebase";
 
 export function App() {
-  const { user } = useOptionalUser();
+  const { user } = useAuth();
 
   return (
     <main

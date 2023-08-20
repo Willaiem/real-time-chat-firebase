@@ -1,10 +1,10 @@
 import { ElementRef, useEffect, useRef } from "react";
-import { useLoggedUser, type TMessage } from "../../services/firebase/firebase";
+import { useAuth, type TMessage } from "../../services/firebase/firebase";
 
 type MessageProps = TMessage
 
 export const Message = ({ content, displayName, photoURL }: MessageProps) => {
-  const { user } = useLoggedUser();
+  const { user } = useAuth();
 
   const messageRef = useRef<ElementRef<'div'>>(null);
 

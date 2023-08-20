@@ -1,7 +1,7 @@
-import { useOptionalUser } from "../../services/firebase/firebase";
+import { useAuth } from "../../services/firebase/firebase";
 
 export const SignIn = () => {
-  const { signInWithGoogle } = useOptionalUser();
+  const { signInWithGoogle } = useAuth();
 
   return (
     <div className="flex justify-center items-center bg-secondary w-[36rem] h-[28rem] rounded-xl">
