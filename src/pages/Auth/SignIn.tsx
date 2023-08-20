@@ -1,7 +1,7 @@
-import { useAuth } from "../../services/firebase/firebase";
+import { useOptionalUser } from "../../services/firebase/firebase";
 
 export const SignIn = () => {
-  const { signInWithGoogle } = useAuth();
+  const { signInWithGoogle } = useOptionalUser();
 
   return (
     <div className="flex justify-center items-center bg-secondary w-[36rem] h-[28rem] rounded-xl">
@@ -12,8 +12,8 @@ export const SignIn = () => {
         <img
           className="w-6 h-6 shadow"
           src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-          alt=""
-        />{" "}
+          alt="google logo"
+        />
         <span>Login with Google</span>
       </button>
     </div>

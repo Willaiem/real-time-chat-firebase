@@ -1,19 +1,16 @@
 import { SignIn } from "./pages/Auth/SignIn";
 import { Chat } from "./pages/Chat/Chat";
-import { useAuth } from "./services/firebase/firebase";
+import { useOptionalUser } from "./services/firebase/firebase";
 
-function App() {
-  const { isLogged } = useAuth();
+export function App() {
+  const { user } = useOptionalUser();
 
   return (
     <main
-      className={`w-screen h-screen bg-background flex ${
-        !isLogged && "justify-center items-center"
-      }`}
+      className={`w-screen h-screen bg-background flex ${!user && "justify-center items-center"
+        }`}
     >
-      {isLogged ? <Chat /> : <SignIn />}
+      {user ? <Chat /> : <SignIn />}
     </main>
   );
 }
-
-export default App;

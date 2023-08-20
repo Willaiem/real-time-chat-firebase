@@ -2,15 +2,22 @@ import { useState } from "react";
 import { useChat } from "../../services/firebase/firebase";
 
 export const MessageForm = () => {
-  const [messageContent, setMessageContent] = useState<string>("");
+  const [messageContent, setMessageContent] = useState("");
   const { addMessage } = useChat();
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    if (messageContent === "") return;
-    addMessage(messageContent);
+
+    const message = messageContent.trim();
+
+    const isEmpty = message.length === 0;
+    if (isEmpty) return;
+
+    addMessage(message);
     setMessageContent("");
   };
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => setMessageContent(e.target.value);
 
   return (
     <form
@@ -20,9 +27,13 @@ export const MessageForm = () => {
       <input
         className="md:w-[95%] w-[70%] p-4 bg-secondary rounded-l-lg md:outline-none"
         placeholder="Type something..."
+        aria-label="Type something..."
         type="text"
+        required
+        min={1}
+        max={1024}
         value={messageContent}
-        onChange={(e) => setMessageContent(e.target.value)}
+        onChange={handleInput}
       />
       <button className="bg-accent rounded-r-lg px-4">Send</button>
     </form>
